@@ -1,3 +1,5 @@
+
+
 export interface DependencyGraph {
-    [moduleName : string] : string[];
-};
+    [key: string]: string[];
+}
