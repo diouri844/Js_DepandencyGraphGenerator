@@ -1,5 +1,5 @@
 export type ScanneResult ={
-    type: "file" |"directory",
     path: string,
-    files: ScanneResult[] |null;
+    directory: ScanneResult[];
+    files: string[];
 };
