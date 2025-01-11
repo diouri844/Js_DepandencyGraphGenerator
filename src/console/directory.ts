@@ -1,28 +1,22 @@
 import kleur from 'kleur';
+import { ScanneResult } from '../types/scanne';
 
 
 
-function displayDirectoryStructur(files:any) {
-    for (const [dir, file] of Object.entries(files)) {
-            if (Array.isArray(file)) {
-                console.log(kleur.green(dir));
-                for (const f of file) {
-                    console.log(kleur.blue(`  - ${f}`));
-                }
-            } else {
-                console.log(kleur.green(dir));
-                for (const [subDir, subFiles] of Object.entries(file as { [key: string]: string[] })) {
-                    console.log(kleur.green(`  - ${subDir}`));
-                    if (Array.isArray(subFiles)) {
-                        for (const f of subFiles) {
-                            console.log(kleur.blue(`    - ${f}`));
-                        }
-                    } else {
-                        console.log(kleur.blue(`    - ${subFiles}`));
-                    }
-                }
-            }
-    }
-}
 
-export { displayDirectoryStructur };
+export function consoleDir(direcotryScanned:ScanneResult):void{
+    
+    direcotryScanned.directory.forEach((item: ScanneResult) => {
+        console.log(kleur.bgGreen(`*Directory: ${item.path}`));
+        item.files.forEach((file: string) => {
+            console.log(kleur.magenta(`  File: ${file}`));
+        });
+        item.directory.forEach((subItem: ScanneResult) => {
+            console.log(kleur.yellow(`-> Subdirectory: ${subItem.path}`));
+            consoleDir(subItem);
+            subItem.files.forEach((subFile: string) => {
+                console.log(kleur.magenta(`    ::File: ${subFile}`));
+            });
+        });
+    });
+};
